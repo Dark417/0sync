@@ -14,25 +14,12 @@ if not exist .git (
   git init >> "%PRLOG%" 2>&1
 )
 
-rem ensure branch and remote
+rem ensure branch
 git branch -M main 2>> "%PRLOG%" || rem
 
-git remote get-url origin >nul 2>&1
-if errorlevel 1 (
-  where gh >nul 2>&1
-  if errorlevel 0 (
-    gh repo create Dark417/0sync --public --source=. --remote=origin --push >> "%PRLOG%" 2>&1 || (
-      git remote add origin https://github.com/Dark417/0sync.git >> "%PRLOG%" 2>&1
-    )
-  ) else (
-    git remote add origin https://github.com/Dark417/0sync.git >> "%PRLOG%" 2>&1
-  )
-)
-
-rem count lines in log.txt
+rem count lines in log.txt (robust)
 set LINES=0
-for /f "tokens=2 delims=:" %%a in ('find /v /c "" "%REPO_ROOT%\log.txt"') do set LINES=%%a
-set LINES=%LINES: =%
+for /f "usebackq delims=" %%a in (`type "%REPO_ROOT%\log.txt" ^| find /v /c ""`) do set LINES=%%a
 echo log.txt lines: %LINES% >> "%PRLOG%"
 
 rem read last line from log.txt for commit message
@@ -45,19 +32,38 @@ rem initial commit path (if only 1 line in log.txt)
 if "%LINES%"=="1" (
   git add . >> "%PRLOG%" 2>&1
   git commit -m "%TIMESTAMP%: %LAST_LINE%" >> "%PRLOG%" 2>&1 || echo No changes to commit >> "%PRLOG%"
+  rem try to push; if origin not set or push fails, attempt to create remote via gh or add remote then push
   git push -u origin main >> "%PRLOG%" 2>&1 || (
-    echo initial push failed, attempting gh create >> "%PRLOG%"
-    where gh >nul 2>&1
-    if errorlevel 0 (
-      gh repo create Dark417/0sync --public --source=. --remote=origin --push >> "%PRLOG%" 2>&1
+    echo initial push failed, attempting to create remote or set origin >> "%PRLOG%"
+    git remote get-url origin >nul 2>&1 || (
+      where gh >nul 2>&1
+      if errorlevel 0 (
+        gh repo create Dark417/0sync --public --source=. --remote=origin --push >> "%PRLOG%" 2>&1 || (
+          git remote add origin https://github.com/Dark417/0sync.git >> "%PRLOG%" 2>&1
+        )
+      ) else (
+        git remote add origin https://github.com/Dark417/0sync.git >> "%PRLOG%" 2>&1
+      )
     )
+    rem attempt push again
+    git push -u origin main >> "%PRLOG%" 2>&1 || echo initial push retry failed >> "%PRLOG%"
   )
 ) else (
   git add . >> "%PRLOG%" 2>&1
   git commit -m "%TIMESTAMP%: %LAST_LINE%" >> "%PRLOG%" 2>&1 || echo No changes to commit >> "%PRLOG%"
   git push origin main >> "%PRLOG%" 2>&1 || (
-    echo push failed, trying to set upstream >> "%PRLOG%"
-    git push -u origin main >> "%PRLOG%" 2>&1 || echo push failed >> "%PRLOG%"
+    echo push failed, trying to set upstream or create remote >> "%PRLOG%"
+    git remote get-url origin >nul 2>&1 || (
+      where gh >nul 2>&1
+      if errorlevel 0 (
+        gh repo create Dark417/0sync --public --source=. --remote=origin --push >> "%PRLOG%" 2>&1 || (
+          git remote add origin https://github.com/Dark417/0sync.git >> "%PRLOG%" 2>&1
+        )
+      ) else (
+        git remote add origin https://github.com/Dark417/0sync.git >> "%PRLOG%" 2>&1
+      )
+    )
+    git push -u origin main >> "%PRLOG%" 2>&1 || echo push retry failed >> "%PRLOG%"
   )
 )
 

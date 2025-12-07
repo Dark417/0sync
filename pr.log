@@ -76,3 +76,17 @@ initial push retry failed
 ==== pr.bat started at Sun 12/07/2025  4:35:37.35 ====
 ==== pr.bat started at Sun 12/07/2025  4:36:42.78 ====
 log.txt lines: 1 
+warning: in the working copy of 'pr.bat', LF will be replaced by CRLF the next time Git touches it
+warning: in the working copy of 'pr.log', LF will be replaced by CRLF the next time Git touches it
+[main 1f7de01] Sun 12/07/2025  4:36:42.85: 25-12-07 04:10 X-Voyager: Initialized 0sync project files
+ 3 files changed, 64 insertions(+), 26 deletions(-)
+GraphQL: Could not resolve to a Repository with the name 'Dark417/0sync'. (repository)
+remote repo not found; creating via gh 
+https://github.com/Dark417/0sync
+X Unable to add remote "origin"
+branch 'main' set up to track 'origin/main'.
+To https://github.com/Dark417/0sync.git
+ * [new branch]      main -> main
+==== pr.bat finished at Sun 12/07/2025  4:36:47.45 ====
+==== pr.bat started at Sun 12/07/2025  4:37:56.77 ====
+log.txt lines: 1 

@@ -26,3 +26,15 @@ push failed
 ==== pr.bat finished at Sun 12/07/2025  4:15:01.91 ====
 ==== pr.bat started at Sun 12/07/2025  4:18:56.00 ====
 log.txt lines: \1AI\1A.L\0SYNC\LOG.TXT 
+warning: in the working copy of 'pr.log', LF will be replaced by CRLF the next time Git touches it
+[main 98f8ead] Sun 12/07/2025  4:18:56.10: 25-12-07 04:10 X-Voyager: Initialized 0sync project files
+ 2 files changed, 24 insertions(+)
+remote: Repository not found.
+fatal: repository 'https://github.com/Dark417/0sync.git/' not found
+push failed, trying to set upstream 
+remote: Repository not found.
+fatal: repository 'https://github.com/Dark417/0sync.git/' not found
+push failed 
+==== pr.bat finished at Sun 12/07/2025  4:18:57.66 ====
+==== pr.bat started at Sun 12/07/2025  4:24:05.16 ====
+log.txt lines: \1AI\1A.L\0SYNC\LOG.TXT 
